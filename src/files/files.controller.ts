@@ -7,6 +7,7 @@ import {
   MaxFileSizeValidator,
   Get,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
@@ -14,6 +15,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { fileStorage } from './storage';
 import { JwtAuthGuard } from 'src/auth/quards/jwt.guard';
 import { UserId } from 'src/decorators/user-id.decorator';
+import { EFielType } from './entities/file.entity';
 
 @Controller('files')
 @ApiTags('files')
@@ -22,8 +24,8 @@ import { UserId } from 'src/decorators/user-id.decorator';
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
   @Get()
-  findAll() {
-    return this.filesService.findAll();
+  findAll(@UserId() userId: number, @Query('type') fileType: EFielType) {
+    return this.filesService.findAll(userId, fileType);
   }
   @Post()
   @UseInterceptors(FileInterceptor('file', { storage: fileStorage }))
