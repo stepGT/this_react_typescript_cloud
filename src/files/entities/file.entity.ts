@@ -6,6 +6,12 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+export enum EFielType {
+  PHOTOS = 'photos',
+  TRASH = 'trash',
+}
+
 @Entity('files')
 export class FileEntity {
   @PrimaryGeneratedColumn()
